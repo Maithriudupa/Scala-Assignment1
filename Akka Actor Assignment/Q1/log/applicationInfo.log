@@ -1,0 +1,8 @@
+[INFO] [Mon Oct 03 14:50:48 IST 2022] Logging a simple message by extending a trait 
+[INFO] [Mon Oct 03 14:50:48 IST 2022] Hi 
+[INFO] [Mon Oct 03 14:53:43 IST 2022] Logging a simple message by extending a trait 
+[INFO] [Mon Oct 03 14:53:43 IST 2022] Hi 
+[INFO] [Mon Oct 03 14:53:43 IST 2022]  
+[INFO] [Mon Oct 03 14:56:25 IST 2022] Logging a simple message by extending a trait 
+[INFO] [Mon Oct 03 14:56:25 IST 2022] Hi 
+[INFO] [Mon Oct 03 15:45:27 IST 2022] supervised actor restarting because of Sentence is empty 
