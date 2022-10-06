@@ -42,7 +42,7 @@ object ScalaJdbcConnectSelect extends App  with UserJsonProtocol with SprayJsonS
   val driver = "com.mysql.cj.jdbc.Driver"
   val url = "jdbc:mysql://localhost/Trial"
   val username = "root"
-  val password = "Kram@158!"
+  val password = "password"
 
   // there's probably a better way to do this
   var connection:Connection = null
