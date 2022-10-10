@@ -1,0 +1,386 @@
+1. Load a dataframe from a csv file (retail csv)
+2. print schema and make sure first row which is header in csv file is considered.
+3. cast a column from integer to double
+4. add a new column which is sum of any 3 numeric columns
+5. delete any one of column
+6. print logical plan and check above steps will be present
+7. print some sample rows 
+8. move file from given locationa and again try println sample rows you will get error saying file not found
+9. move back file to crct place and cache above dataframe
+10. now perform action like count
+11. move file from given locationa and again try println sample rows , error wont be thrown now because data is present in memeory
+12. filter above rows for only 2013.
+
+perform following on above df
+
+print sum of sales for each ship mode
+print sum of sales and discount for each ship mode and category (aggregations => sum sales, sum discount, groupBy => ship mode and category)
+
+write above dataframes to a csv file.
+
+==========================================================================================================================================================================
+Solution:
+1. Load a dataframe from a csv file (retail csv)
+
+COMMAND:
+
+var df = spark.read.csv("/Users/maithriudupa/Documents/RetailAnalytics_cpy_nulls.csv")
+
+RESULT:
+
+//df: org.apache.spark.sql.DataFrame = [_c0: string, _c1: string ... 19 more fields]
+===========================================================================================================================================================================
+2. print schema and make sure first row which is header in csv file is considered.
+
+COMMAND: 
+
+df.printSchema()
+
+RESULT:
+
+/*
+root
+ |-- _c0: string (nullable = true)
+ |-- _c1: string (nullable = true)
+ |-- _c2: string (nullable = true)
+ |-- _c3: string (nullable = true)
+ |-- _c4: string (nullable = true)
+ |-- _c5: string (nullable = true)
+ |-- _c6: string (nullable = true)
+ |-- _c7: string (nullable = true)
+ |-- _c8: string (nullable = true)
+ |-- _c9: string (nullable = true)
+ |-- _c10: string (nullable = true)
+ |-- _c11: string (nullable = true)
+ |-- _c12: string (nullable = true)
+ |-- _c13: string (nullable = true)
+ |-- _c14: string (nullable = true)
+ |-- _c15: string (nullable = true)
+ |-- _c16: string (nullable = true)
+ |-- _c17: string (nullable = true)
+ |-- _c18: string (nullable = true)
+ |-- _c19: string (nullable = true)
+ |-- _c20: string (nullable = true)
+ */
+
+===========================================================================================================================================================================
+3. cast a column from integer to double
+
+COMMAND: 
+
+df = df.withColumn("_c13", df("_c13").cast("double"))
+
+RESULT:
+
+//df: org.apache.spark.sql.DataFrame = [_c0: string, _c1: string ... 19 more fields]
+
+
+COMMAND: 
+
+df.printSchema()
+
+RESULT:
+
+/*
+root
+ |-- _c0: string (nullable = true)
+ |-- _c1: string (nullable = true)
+ |-- _c2: string (nullable = true)
+ |-- _c3: string (nullable = true)
+ |-- _c4: string (nullable = true)
+ |-- _c5: string (nullable = true)
+ |-- _c6: string (nullable = true)
+ |-- _c7: string (nullable = true)
+ |-- _c8: string (nullable = true)
+ |-- _c9: string (nullable = true)
+ |-- _c10: string (nullable = true)
+ |-- _c11: string (nullable = true)
+ |-- _c12: string (nullable = true)
+ |-- _c13: double (nullable = true)
+ |-- _c14: string (nullable = true)
+ |-- _c15: string (nullable = true)
+ |-- _c16: string (nullable = true)
+ |-- _c17: string (nullable = true)
+ |-- _c18: string (nullable = true)
+ |-- _c19: string (nullable = true)
+
+ */
+===========================================================================================================================================================================
+4. add a new column which is sum of any 3 numeric columns
+
+COMMAND: 
+
+ df = df.withColumn("sum", col("_c11") + col("_c12") + col("_c13"))
+
+ RESULT:
+
+ //df: org.apache.spark.sql.DataFrame = [_c0: string, _c1: string ... 20 more fields]
+
+
+COMMAND: 
+
+ df.printSchema()
+
+ RESULT:
+
+ /*
+ root
+ |-- _c0: string (nullable = true)
+ |-- _c1: string (nullable = true)
+ |-- _c2: string (nullable = true)
+ |-- _c3: string (nullable = true)
+ |-- _c4: string (nullable = true)
+ |-- _c5: string (nullable = true)
+ |-- _c6: string (nullable = true)
+ |-- _c7: string (nullable = true)
+ |-- _c8: string (nullable = true)
+ |-- _c9: string (nullable = true)
+ |-- _c10: string (nullable = true)
+ |-- _c11: string (nullable = true)
+ |-- _c12: string (nullable = true)
+ |-- _c13: double (nullable = true)
+ |-- _c14: string (nullable = true)
+ |-- _c15: string (nullable = true)
+ |-- _c16: string (nullable = true)
+ |-- _c17: string (nullable = true)
+ |-- _c18: string (nullable = true)
+ |-- _c19: string (nullable = true)
+ |-- _c20: string (nullable = true)
+ |-- sum: double (nullable = true)
+
+ */
+===========================================================================================================================================================================
+5. delete any one of column
+
+ COMMAND: 
+
+ df = df.drop("_c18")
+
+ RESULT:
+
+ //df: org.apache.spark.sql.DataFrame = [_c0: string, _c1: string ... 19 more fields]
+
+ COMMAND: 
+
+ df.printSchema()
+
+ RESULT:
+
+ /*
+ root
+ |-- _c0: string (nullable = true)
+ |-- _c1: string (nullable = true)
+ |-- _c2: string (nullable = true)
+ |-- _c3: string (nullable = true)
+ |-- _c4: string (nullable = true)
+ |-- _c5: string (nullable = true)
+ |-- _c6: string (nullable = true)
+ |-- _c7: string (nullable = true)
+ |-- _c8: string (nullable = true)
+ |-- _c9: string (nullable = true)
+ |-- _c10: string (nullable = true)
+ |-- _c11: string (nullable = true)
+ |-- _c12: string (nullable = true)
+ |-- _c13: double (nullable = true)
+ |-- _c14: string (nullable = true)
+ |-- _c15: string (nullable = true)
+ |-- _c16: string (nullable = true)
+ |-- _c17: string (nullable = true)
+ |-- _c19: string (nullable = true)
+ |-- _c20: string (nullable = true)
+ |-- sum: double (nullable = true)
+
+ */
+===========================================================================================================================================================================
+6. print logical plan and check above steps will be present
+
+COMMAND: 
+
+ df.explain()
+
+ RESULT:
+
+ /*
+
+ == Physical Plan ==
+*(1) Project [_c0#102, _c1#103, _c2#104, _c3#105, _c4#106, _c5#107, _c6#108, _c7#109, _c8#110, _c9#111, _c10#112, _c11#113, _c12#114, _c13#144, _c14#116, _c15#117, _c16#118, _c17#119, _c19#121, _c20#122, ((cast(_c11#113 as double) + cast(_c12#114 as double)) + _c13#144) AS sum#168]
++- *(1) Project [_c0#102, _c1#103, _c2#104, _c3#105, _c4#106, _c5#107, _c6#108, _c7#109, _c8#110, _c9#111, _c10#112, _c11#113, _c12#114, cast(_c13#115 as double) AS _c13#144, _c14#116, _c15#117, _c16#118, _c17#119, _c19#121, _c20#122]
+   +- FileScan csv [_c0#102,_c1#103,_c2#104,_c3#105,_c4#106,_c5#107,_c6#108,_c7#109,_c8#110,_c9#111,_c10#112,_c11#113,_c12#114,_c13#115,_c14#116,_c15#117,_c16#118,_c17#119,_c19#121,_c20#122] Batched: false, DataFilters: [], Format: CSV, Location: InMemoryFileIndex(1 paths)[file:/Users/maithriudupa/Documents/RetailAnalytics_cpy_nulls.csv], PartitionFilters: [], PushedFilters: [], ReadSchema: struct<_c0:string,_c1:string,_c2:string,_c3:string,_c4:string,_c5:string,_c6:string,_c7:string,_c...
+
+ */
+
+===========================================================================================================================================================================
+7. print some sample rows 
+
+COMMAND: 
+
+df.select(df("_c1"), df("_c2"), df("_c3")).filter("_c2 like 'H%' " ).show(5)
+
+RESULT:
+
+/*
+
++--------------+-----------+---------+
+|           _c1|        _c2|      _c3|
++--------------+-----------+---------+
+|      Same Day|Home Office| SHENZHEN|
+|      Same Day|Home Office| SHENZHEN|
+|   First Class|Home Office|MARSEILLE|
+|Standard Class|Home Office|HAMAMATSU|
+|  Second Class|Home Office|   BURGOS|
++--------------+-----------+---------+
+only showing top 5 rows
+
+*/
+
+===========================================================================================================================================================================
+8. move file from given locationa and again try println sample rows you will get error saying file not found
+
+COMMAND: 
+
+df.select(df("_c1"), df("_c2"), df("_c3")).filter("_c2 like 'H%' " ).show(5)
+
+RESULT:
+
+/*
+
+22/10/10 19:35:35 ERROR Executor: Exception in task 0.0 in stage 6.0 (TID 6)
+java.io.FileNotFoundException: 
+File file:/Users/maithriudupa/Documents/RetailAnalytics_cpy_nulls.csv does not exist
+
+It is possible the underlying files have been updated. You can explicitly invalidate
+the cache in Spark by running 'REFRESH TABLE tableName' command in SQL or by
+recreating the Dataset/DataFrame involved. 
+*/
+
+===========================================================================================================================================================================
+9. move back file to crct place and cache above dataframe 
+
+11. move file from given locationa and again try println sample rows , error wont be thrown now because data is present in memeory
+
+COMMAND: 
+
+df.cache
+
+
+COMMAND: 
+
+df.select(df("_c1"), df("_c2"), df("_c3")).filter("_c2 like 'H%' " ).show(5)
+
+RESULT:
+
++--------------+-----------+---------+
+|           _c1|        _c2|      _c3|
++--------------+-----------+---------+
+|      Same Day|Home Office| SHENZHEN|
+|      Same Day|Home Office| SHENZHEN|
+|   First Class|Home Office|MARSEILLE|
+|Standard Class|Home Office|HAMAMATSU|
+|  Second Class|Home Office|   BURGOS|
++--------------+-----------+---------+
+only showing top 5 rows
+
+===========================================================================================================================================================================
+10. now perform action like count
+
+COMMAND: 
+
+df.filter("_c2 like 'H%' " ).count()
+
+RESULT:
+
+//res29: Long = 336
+
+===========================================================================================================================================================================
+12. filter above rows for only 2013.
+
+COMMAND: 
+
+df.select(df("_c0")).filter("_c0 like '2013%' " ).show()
+
+RESULT:
+
+/*
++--------------------+
+|                 _c0|
++--------------------+
+|2013-02-05T00:00:...|
+|2013-10-02T00:00:...|
+|2013-06-10T00:00:...|
+|2013-06-10T00:00:...|
+|2013-11-15T00:00:...|
+|2013-11-04T00:00:...|
+|2013-08-01T00:00:...|
+|2013-04-05T00:00:...|
+|2013-06-01T00:00:...|
+|2013-12-19T00:00:...|
+|2013-06-27T00:00:...|
+|2013-10-16T00:00:...|
+|2013-12-12T00:00:...|
+|2013-10-07T00:00:...|
+|2013-06-04T00:00:...|
+|2013-08-16T00:00:...|
+|2013-06-13T00:00:...|
+|2013-07-03T00:00:...|
+|2013-05-17T00:00:...|
+|2013-11-28T00:00:...|
++--------------------+
+only showing top 20 rows
+*/
+
+
+===========================================================================================================================================================================
+print sum of sales for each ship mode
+
+COMMAND: 
+
+df = df.withColumn("_c11",df("_c11").cast("double"))
+df.groupBy("_c1").sum("_c11").show(false)
+
+RESULT:
+
++--------------+------------------+
+|_c1           |sum(_c11)         |
++--------------+------------------+
+|First Class   |88085.52150000003 |
+|Same Day      |26118.863759999982|
+|Second Class  |88966.61812000003 |
+|Standard Class|283435.16618000035|
+|Ship_Mode     |null              |
++--------------+------------------+
+
+===========================================================================================================================================================================
+
+print sum of sales and discount for each ship mode and category (aggregations => sum sales, sum discount, groupBy => ship mode and category)
+
+COMMAND: 
+
+df = df.withColumn("_c13", df("_c13").cast("double"))
+
+df.groupBy("_c1","_c8").sum("_c11","_c13").show(false)
+
+RESULT:
+
++--------------+---------------+------------------+------------------+
+|_c1           |_c8            |sum(_c11)         |sum(_c13)         |
++--------------+---------------+------------------+------------------+
+|Second Class  |Office Supplies|27829.79739999998 |319.3759999999999 |
+|Second Class  |Technology     |29806.762619999998|9.274000000000001 |
+|Standard Class|Furniture      |88468.94309999996 |34.449999999999974|
+|Standard Class|Technology     |105047.14458      |24.517999999999994|
+|Ship_Mode     |Category       |null              |null              |
+|Standard Class|Office Supplies|89919.0784999999  |99.96000000000016 |
+|First Class   |Office Supplies|29211.73399999999 |29.009999999999994|
+|Second Class  |Furniture      |31330.058099999995|11.76             |
+|First Class   |Technology     |34305.55389999999 |6.952000000000003 |
+|Same Day      |Office Supplies|6967.856000000004 |6.200000000000002 |
+|Same Day      |Furniture      |10219.730000000001|1.5999999999999999|
+|Same Day      |Technology     |8931.277759999999 |0.704             |
+|First Class   |Furniture      |24568.233600000003|8.589999999999998 |
++--------------+---------------+------------------+------------------+
+===========================================================================================================================================================================
+write above dataframes to a csv file.
+
+COMMAND: 
+
+df.write.csv("/Users/maithriudupa/Documents/datacsv")
