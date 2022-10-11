@@ -24,7 +24,7 @@ Solution:
 
 COMMAND:
 
-var df = spark.read.option("inferSchema", "true").option("header", "true").csv("/Users/maithriudupa/Documents/RetailAnalytics_cpy_nulls.csv")
+val df = spark.read.option("inferSchema", "true").option("header", "true").csv("/Users/maithriudupa/Documents/RetailAnalytics_cpy_nulls.csv")
 
 RESULT:
 
@@ -68,16 +68,16 @@ root
 
 COMMAND: 
 
-df = df.withColumn("Quantity", df("Quantity").cast("double"))
+val df1 = df.withColumn("Quantity", df("Quantity").cast("double"))
 
 RESULT:
 
-//df: org.apache.spark.sql.DataFrame = [Order_Date: timestamp, Ship_Mode: string ... 19 more fields]
+//df1: org.apache.spark.sql.DataFrame = [Order_Date: timestamp, Ship_Mode: string ... 19 more fields]
 
 
 COMMAND: 
 
-df.printSchema()
+df1.printSchema()
 
 RESULT:
 
@@ -111,7 +111,7 @@ root
 
 COMMAND: 
 
- df = df.withColumn("sum", col("_c11") + col("_c12") + col("_c13"))
+ val df2 = df1.withColumn("sum", col("Sales") + col("Quantity") + col("Discount"))
 
  RESULT:
 
@@ -120,7 +120,7 @@ COMMAND:
 
 COMMAND: 
 
- df.printSchema()
+ df2.printSchema()
 
  RESULT:
 
@@ -154,7 +154,7 @@ COMMAND:
 
  COMMAND: 
 
- df = df.drop("People_Region")
+ val df3 = df2.drop("People_Region")
 
  RESULT:
 
@@ -162,7 +162,7 @@ COMMAND:
 
  COMMAND: 
 
- df.printSchema()
+ df3.printSchema()
 
  RESULT:
 
@@ -197,40 +197,40 @@ root
 
 COMMAND: 
 
- df.explain(true)
+ df3.explain(true)
 
  RESULT:
 
  /*
 
  == Parsed Logical Plan ==
-Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, Quantity#60, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, Order_ID#36, Market#37, sum#82]
-+- Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, Quantity#60, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, People_Region#35, Order_ID#36, Market#37, ((Sales#28 + Quantity#60) + Discount#30) AS sum#82]
-   +- Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, cast(Quantity#29 as double) AS Quantity#60, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, People_Region#35, Order_ID#36, Market#37]
+Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, Quantity#59, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, Order_ID#36, Market#37, sum#82]
++- Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, Quantity#59, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, People_Region#35, Order_ID#36, Market#37, ((Sales#28 + Quantity#59) + Discount#30) AS sum#82]
+   +- Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, cast(Quantity#29 as double) AS Quantity#59, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, People_Region#35, Order_ID#36, Market#37]
       +- Relation [Order_Date#17,Ship_Mode#18,Segment#19,City#20,State#21,Country#22,Orders_Market#23,Orders_Region#24,Category#25,Sub_Category#26,Product_Name#27,Sales#28,Quantity#29,Discount#30,Profit#31,Shipping_Cost#32,Order_Priority#33,Person#34,People_Region#35,Order_ID#36,Market#37] csv
 
 == Analyzed Logical Plan ==
 Order_Date: timestamp, Ship_Mode: string, Segment: string, City: string, State: string, Country: string, Orders_Market: string, Orders_Region: string, Category: string, Sub_Category: string, Product_Name: string, Sales: double, Quantity: double, Discount: double, Profit: double, Shipping_Cost: double, Order_Priority: string, Person: string, Order_ID: string, Market: string, sum: double
-Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, Quantity#60, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, Order_ID#36, Market#37, sum#82]
-+- Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, Quantity#60, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, People_Region#35, Order_ID#36, Market#37, ((Sales#28 + Quantity#60) + Discount#30) AS sum#82]
-   +- Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, cast(Quantity#29 as double) AS Quantity#60, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, People_Region#35, Order_ID#36, Market#37]
+Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, Quantity#59, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, Order_ID#36, Market#37, sum#82]
++- Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, Quantity#59, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, People_Region#35, Order_ID#36, Market#37, ((Sales#28 + Quantity#59) + Discount#30) AS sum#82]
+   +- Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, cast(Quantity#29 as double) AS Quantity#59, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, People_Region#35, Order_ID#36, Market#37]
       +- Relation [Order_Date#17,Ship_Mode#18,Segment#19,City#20,State#21,Country#22,Orders_Market#23,Orders_Region#24,Category#25,Sub_Category#26,Product_Name#27,Sales#28,Quantity#29,Discount#30,Profit#31,Shipping_Cost#32,Order_Priority#33,Person#34,People_Region#35,Order_ID#36,Market#37] csv
 
 == Optimized Logical Plan ==
-Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, Quantity#60, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, Order_ID#36, Market#37, ((Sales#28 + Quantity#60) + Discount#30) AS sum#82]
-+- Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, cast(Quantity#29 as double) AS Quantity#60, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, Order_ID#36, Market#37]
+Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, Quantity#59, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, Order_ID#36, Market#37, ((Sales#28 + Quantity#59) + Discount#30) AS sum#82]
++- Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, cast(Quantity#29 as double) AS Quantity#59, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, Order_ID#36, Market#37]
    +- Relation [Order_Date#17,Ship_Mode#18,Segment#19,City#20,State#21,Country#22,Orders_Market#23,Orders_Region#24,Category#25,Sub_Category#26,Product_Name#27,Sales#28,Quantity#29,Discount#30,Profit#31,Shipping_Cost#32,Order_Priority#33,Person#34,People_Region#35,Order_ID#36,Market#37] csv
 
 == Physical Plan ==
-*(1) Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, Quantity#60, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, Order_ID#36, Market#37, ((Sales#28 + Quantity#60) + Discount#30) AS sum#82]
-+- *(1) Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, cast(Quantity#29 as double) AS Quantity#60, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, Order_ID#36, Market#37]
+*(1) Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, Quantity#59, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, Order_ID#36, Market#37, ((Sales#28 + Quantity#59) + Discount#30) AS sum#82]
++- *(1) Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, cast(Quantity#29 as double) AS Quantity#59, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, Order_ID#36, Market#37]
    +- FileScan csv [Order_Date#17,Ship_Mode#18,Segment#19,City#20,State#21,Country#22,Orders_Market#23,Orders_Region#24,Category#25,Sub_Category#26,Product_Name#27,Sales#28,Quantity#29,Discount#30,Profit#31,Shipping_Cost#32,Order_Priority#33,Person#34,Order_ID#36,Market#37] Batched: false, DataFilters: [], Format: CSV, Location: InMemoryFileIndex(1 paths)[file:/Users/maithriudupa/Documents/RetailAnalytics_cpy_nulls.csv], PartitionFilters: [], PushedFilters: [], ReadSchema: struct<Order_Date:timestamp,Ship_Mode:string,Segment:string,City:string,State:string,Country:stri...
 ===========================================================================================================================================================================
 7. print some sample rows 
 
 COMMAND: 
 
-df.select(df("Ship_Mode"), df("Segment"), df("City")).filter("Segment like 'H%' " ).show(5)
+df3.select("Ship_Mode", "Segment","City").filter("Segment like 'H%' " ).show(5)
 
 RESULT:
 
@@ -255,7 +255,7 @@ only showing top 5 rows
 
 COMMAND: 
 
-df.select(df("Ship_Mode"), df("Segment"), df("City")).filter("Segment like 'H%' " ).show(5)
+df3.select("Ship_Mode", "Segment","City").filter("Segment like 'H%' " ).show(5)
 
 RESULT:
 
@@ -277,12 +277,12 @@ recreating the Dataset/DataFrame involved.
 
 COMMAND: 
 
-df.cache
+df3.cache
 
 
 COMMAND: 
 
-df.select(df("Ship_Mode"), df("Segment"), df("City")).filter("Segment like 'H%' " ).show(5)
+df3.select("Ship_Mode", "Segment","City").filter("Segment like 'H%' " ).show(5)
 
 RESULT:
 
@@ -302,47 +302,38 @@ only showing top 5 rows
 
 COMMAND: 
 
-df.filter("Segment like 'H%' " ).count()
+df3.groupBy("Segment").count().show()
 
 RESULT:
 
-//res7: Long = 336
++-----------+-----+
+|    Segment|count|
++-----------+-----+
+|   Consumer|  923|
+|Home Office|  336|
+|  Corporate|  552|
++-----------+-----+
 
 ===========================================================================================================================================================================
 12. filter above rows for only 2013.
 
 COMMAND: 
 
-df.select(df("Order_Date")).filter("Order_Date like '2013%' " ).show()
+df3.select("Order_date").filter(year(col("Order_Date")) === 2013).show(5)
 
 RESULT:
 
 /*
 +-------------------+
-|         Order_Date|
+|         Order_date|
 +-------------------+
 |2013-02-05 05:30:00|
 |2013-10-02 05:30:00|
 |2013-06-10 05:30:00|
 |2013-06-10 05:30:00|
 |2013-11-15 05:30:00|
-|2013-11-04 05:30:00|
-|2013-08-01 05:30:00|
-|2013-04-05 05:30:00|
-|2013-06-01 05:30:00|
-|2013-12-19 05:30:00|
-|2013-06-27 05:30:00|
-|2013-10-16 05:30:00|
-|2013-12-12 05:30:00|
-|2013-10-07 05:30:00|
-|2013-06-04 05:30:00|
-|2013-08-16 05:30:00|
-|2013-06-13 05:30:00|
-|2013-07-03 05:30:00|
-|2013-05-17 05:30:00|
-|2013-11-28 05:30:00|
 +-------------------+
-only showing top 20 rows
+only showing top 5 rows
 
 */
 
@@ -352,12 +343,13 @@ print sum of sales for each ship mode
 
 COMMAND: 
 
-df.groupBy("Ship_Mode").sum("Sales").show(false)
+df3.groupBy("Ship_Mode").agg(sum("Sales") as "Total_Sales").show(false)
+
 
 RESULT:
 
 +--------------+------------------+
-|Ship_Mode     |sum(Sales)        |
+|Ship_Mode     |Total_Sales       |
 +--------------+------------------+
 |First Class   |88085.52150000003 |
 |Same Day      |26118.863759999982|
@@ -372,12 +364,12 @@ print sum of sales and discount for each ship mode and category (aggregations =>
 
 COMMAND: 
 
-> df.groupBy("Ship_Mode","Category").sum("Sales","Discount").show(false)
+> df3.groupBy("Ship_Mode","Category").agg(sum("Sales") as "Total_Sales", sum("Discount") as "Total_Discounts").show(false)
 
 RESULT:
 
 +--------------+---------------+------------------+------------------+
-|Ship_Mode     |Category       |sum(Sales)        |sum(Discount)     |
+|Ship_Mode     |Category       |Total_Sales       |Total_Discounts   |
 +--------------+---------------+------------------+------------------+
 |Second Class  |Office Supplies|27829.79739999998 |319.3759999999999 |
 |Second Class  |Technology     |29806.762619999998|9.274000000000001 |
@@ -397,7 +389,9 @@ write above dataframes to a csv file.
 
 COMMAND: 
 
-df.write.option("inferSchema", "true").option("header", "true").csv("/Users/maithriudupa/Documents/datacsv")
+df3.write.option("inferSchema", "true").option("header", "true").csv("/Users/maithriudupa/Documents/datacsv")
+
+
 
 
 
