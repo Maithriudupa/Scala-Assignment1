@@ -196,17 +196,34 @@ COMMAND:
 
 COMMAND: 
 
- df.explain()
+ df.explain(true)
 
  RESULT:
 
  /*
 
- == Physical Plan ==
-*(1) Project [_c0#102, _c1#103, _c2#104, _c3#105, _c4#106, _c5#107, _c6#108, _c7#109, _c8#110, _c9#111, _c10#112, _c11#113, _c12#114, _c13#144, _c14#116, _c15#117, _c16#118, _c17#119, _c19#121, _c20#122, ((cast(_c11#113 as double) + cast(_c12#114 as double)) + _c13#144) AS sum#168]
-+- *(1) Project [_c0#102, _c1#103, _c2#104, _c3#105, _c4#106, _c5#107, _c6#108, _c7#109, _c8#110, _c9#111, _c10#112, _c11#113, _c12#114, cast(_c13#115 as double) AS _c13#144, _c14#116, _c15#117, _c16#118, _c17#119, _c19#121, _c20#122]
-   +- FileScan csv [_c0#102,_c1#103,_c2#104,_c3#105,_c4#106,_c5#107,_c6#108,_c7#109,_c8#110,_c9#111,_c10#112,_c11#113,_c12#114,_c13#115,_c14#116,_c15#117,_c16#118,_c17#119,_c19#121,_c20#122] Batched: false, DataFilters: [], Format: CSV, Location: InMemoryFileIndex(1 paths)[file:/Users/maithriudupa/Documents/RetailAnalytics_cpy_nulls.csv], PartitionFilters: [], PushedFilters: [], ReadSchema: struct<_c0:string,_c1:string,_c2:string,_c3:string,_c4:string,_c5:string,_c6:string,_c7:string,_c...
+ == Parsed Logical Plan ==
+Project [_c0#17, _c1#18, _c2#19, _c3#20, _c4#21, _c5#22, _c6#23, _c7#24, _c8#25, _c9#26, _c10#27, _c11#28, _c12#29, _c13#59, _c14#31, _c15#32, _c16#33, _c17#34, _c19#36, _c20#37, sum#82]
++- Project [_c0#17, _c1#18, _c2#19, _c3#20, _c4#21, _c5#22, _c6#23, _c7#24, _c8#25, _c9#26, _c10#27, _c11#28, _c12#29, _c13#59, _c14#31, _c15#32, _c16#33, _c17#34, _c18#35, _c19#36, _c20#37, ((cast(_c11#28 as double) + cast(_c12#29 as double)) + _c13#59) AS sum#82]
+   +- Project [_c0#17, _c1#18, _c2#19, _c3#20, _c4#21, _c5#22, _c6#23, _c7#24, _c8#25, _c9#26, _c10#27, _c11#28, _c12#29, cast(_c13#30 as double) AS _c13#59, _c14#31, _c15#32, _c16#33, _c17#34, _c18#35, _c19#36, _c20#37]
+      +- Relation [_c0#17,_c1#18,_c2#19,_c3#20,_c4#21,_c5#22,_c6#23,_c7#24,_c8#25,_c9#26,_c10#27,_c11#28,_c12#29,_c13#30,_c14#31,_c15#32,_c16#33,_c17#34,_c18#35,_c19#36,_c20#37] csv
 
+== Analyzed Logical Plan ==
+_c0: string, _c1: string, _c2: string, _c3: string, _c4: string, _c5: string, _c6: string, _c7: string, _c8: string, _c9: string, _c10: string, _c11: string, _c12: string, _c13: double, _c14: string, _c15: string, _c16: string, _c17: string, _c19: string, _c20: string, sum: double
+Project [_c0#17, _c1#18, _c2#19, _c3#20, _c4#21, _c5#22, _c6#23, _c7#24, _c8#25, _c9#26, _c10#27, _c11#28, _c12#29, _c13#59, _c14#31, _c15#32, _c16#33, _c17#34, _c19#36, _c20#37, sum#82]
++- Project [_c0#17, _c1#18, _c2#19, _c3#20, _c4#21, _c5#22, _c6#23, _c7#24, _c8#25, _c9#26, _c10#27, _c11#28, _c12#29, _c13#59, _c14#31, _c15#32, _c16#33, _c17#34, _c18#35, _c19#36, _c20#37, ((cast(_c11#28 as double) + cast(_c12#29 as double)) + _c13#59) AS sum#82]
+   +- Project [_c0#17, _c1#18, _c2#19, _c3#20, _c4#21, _c5#22, _c6#23, _c7#24, _c8#25, _c9#26, _c10#27, _c11#28, _c12#29, cast(_c13#30 as double) AS _c13#59, _c14#31, _c15#32, _c16#33, _c17#34, _c18#35, _c19#36, _c20#37]
+      +- Relation [_c0#17,_c1#18,_c2#19,_c3#20,_c4#21,_c5#22,_c6#23,_c7#24,_c8#25,_c9#26,_c10#27,_c11#28,_c12#29,_c13#30,_c14#31,_c15#32,_c16#33,_c17#34,_c18#35,_c19#36,_c20#37] csv
+
+== Optimized Logical Plan ==
+Project [_c0#17, _c1#18, _c2#19, _c3#20, _c4#21, _c5#22, _c6#23, _c7#24, _c8#25, _c9#26, _c10#27, _c11#28, _c12#29, _c13#59, _c14#31, _c15#32, _c16#33, _c17#34, _c19#36, _c20#37, ((cast(_c11#28 as double) + cast(_c12#29 as double)) + _c13#59) AS sum#82]
++- Project [_c0#17, _c1#18, _c2#19, _c3#20, _c4#21, _c5#22, _c6#23, _c7#24, _c8#25, _c9#26, _c10#27, _c11#28, _c12#29, cast(_c13#30 as double) AS _c13#59, _c14#31, _c15#32, _c16#33, _c17#34, _c19#36, _c20#37]
+   +- Relation [_c0#17,_c1#18,_c2#19,_c3#20,_c4#21,_c5#22,_c6#23,_c7#24,_c8#25,_c9#26,_c10#27,_c11#28,_c12#29,_c13#30,_c14#31,_c15#32,_c16#33,_c17#34,_c18#35,_c19#36,_c20#37] csv
+
+== Physical Plan ==
+*(1) Project [_c0#17, _c1#18, _c2#19, _c3#20, _c4#21, _c5#22, _c6#23, _c7#24, _c8#25, _c9#26, _c10#27, _c11#28, _c12#29, _c13#59, _c14#31, _c15#32, _c16#33, _c17#34, _c19#36, _c20#37, ((cast(_c11#28 as double) + cast(_c12#29 as double)) + _c13#59) AS sum#82]
++- *(1) Project [_c0#17, _c1#18, _c2#19, _c3#20, _c4#21, _c5#22, _c6#23, _c7#24, _c8#25, _c9#26, _c10#27, _c11#28, _c12#29, cast(_c13#30 as double) AS _c13#59, _c14#31, _c15#32, _c16#33, _c17#34, _c19#36, _c20#37]
+   +- FileScan csv [_c0#17,_c1#18,_c2#19,_c3#20,_c4#21,_c5#22,_c6#23,_c7#24,_c8#25,_c9#26,_c10#27,_c11#28,_c12#29,_c13#30,_c14#31,_c15#32,_c16#33,_c17#34,_c19#36,_c20#37] Batched: false, DataFilters: [], Format: CSV, Location: InMemoryFileIndex(1 paths)[file:/Users/maithriudupa/Documents/RetailAnalytics_cpy_nulls.csv], PartitionFilters: [], PushedFilters: [], ReadSchema: struct<_c0:string,_c1:string,_c2:string,_c3:string,_c4:string,_c5:string,_c6:string,_c7:string,_c...
  */
 
 ===========================================================================================================================================================================
@@ -384,3 +401,4 @@ write above dataframes to a csv file.
 COMMAND: 
 
 df.write.csv("/Users/maithriudupa/Documents/datacsv")
+
