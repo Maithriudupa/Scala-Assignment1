@@ -24,11 +24,11 @@ Solution:
 
 COMMAND:
 
-var df = spark.read.csv("/Users/maithriudupa/Documents/RetailAnalytics_cpy_nulls.csv")
+var df = spark.read.option("inferSchema", "true").option("header", "true").csv("/Users/maithriudupa/Documents/RetailAnalytics_cpy_nulls.csv")
 
 RESULT:
 
-//df: org.apache.spark.sql.DataFrame = [_c0: string, _c1: string ... 19 more fields]
+//df: org.apache.spark.sql.DataFrame = [Order_Date: timestamp, Ship_Mode: string ... 19 more fields]
 ===========================================================================================================================================================================
 2. print schema and make sure first row which is header in csv file is considered.
 
@@ -40,27 +40,27 @@ RESULT:
 
 /*
 root
- |-- _c0: string (nullable = true)
- |-- _c1: string (nullable = true)
- |-- _c2: string (nullable = true)
- |-- _c3: string (nullable = true)
- |-- _c4: string (nullable = true)
- |-- _c5: string (nullable = true)
- |-- _c6: string (nullable = true)
- |-- _c7: string (nullable = true)
- |-- _c8: string (nullable = true)
- |-- _c9: string (nullable = true)
- |-- _c10: string (nullable = true)
- |-- _c11: string (nullable = true)
- |-- _c12: string (nullable = true)
- |-- _c13: string (nullable = true)
- |-- _c14: string (nullable = true)
- |-- _c15: string (nullable = true)
- |-- _c16: string (nullable = true)
- |-- _c17: string (nullable = true)
- |-- _c18: string (nullable = true)
- |-- _c19: string (nullable = true)
- |-- _c20: string (nullable = true)
+ |-- Order_Date: timestamp (nullable = true)
+ |-- Ship_Mode: string (nullable = true)
+ |-- Segment: string (nullable = true)
+ |-- City: string (nullable = true)
+ |-- State: string (nullable = true)
+ |-- Country: string (nullable = true)
+ |-- Orders_Market: string (nullable = true)
+ |-- Orders_Region: string (nullable = true)
+ |-- Category: string (nullable = true)
+ |-- Sub_Category: string (nullable = true)
+ |-- Product_Name: string (nullable = true)
+ |-- Sales: double (nullable = true)
+ |-- Quantity: integer (nullable = true)
+ |-- Discount: double (nullable = true)
+ |-- Profit: double (nullable = true)
+ |-- Shipping_Cost: double (nullable = true)
+ |-- Order_Priority: string (nullable = true)
+ |-- Person: string (nullable = true)
+ |-- People_Region: string (nullable = true)
+ |-- Order_ID: string (nullable = true)
+ |-- Market: string (nullable = true)
  */
 
 ===========================================================================================================================================================================
@@ -68,11 +68,11 @@ root
 
 COMMAND: 
 
-df = df.withColumn("_c13", df("_c13").cast("double"))
+df = df.withColumn("Quantity", df("Quantity").cast("double"))
 
 RESULT:
 
-//df: org.apache.spark.sql.DataFrame = [_c0: string, _c1: string ... 19 more fields]
+//df: org.apache.spark.sql.DataFrame = [Order_Date: timestamp, Ship_Mode: string ... 19 more fields]
 
 
 COMMAND: 
@@ -83,26 +83,27 @@ RESULT:
 
 /*
 root
- |-- _c0: string (nullable = true)
- |-- _c1: string (nullable = true)
- |-- _c2: string (nullable = true)
- |-- _c3: string (nullable = true)
- |-- _c4: string (nullable = true)
- |-- _c5: string (nullable = true)
- |-- _c6: string (nullable = true)
- |-- _c7: string (nullable = true)
- |-- _c8: string (nullable = true)
- |-- _c9: string (nullable = true)
- |-- _c10: string (nullable = true)
- |-- _c11: string (nullable = true)
- |-- _c12: string (nullable = true)
- |-- _c13: double (nullable = true)
- |-- _c14: string (nullable = true)
- |-- _c15: string (nullable = true)
- |-- _c16: string (nullable = true)
- |-- _c17: string (nullable = true)
- |-- _c18: string (nullable = true)
- |-- _c19: string (nullable = true)
+ |-- Order_Date: timestamp (nullable = true)
+ |-- Ship_Mode: string (nullable = true)
+ |-- Segment: string (nullable = true)
+ |-- City: string (nullable = true)
+ |-- State: string (nullable = true)
+ |-- Country: string (nullable = true)
+ |-- Orders_Market: string (nullable = true)
+ |-- Orders_Region: string (nullable = true)
+ |-- Category: string (nullable = true)
+ |-- Sub_Category: string (nullable = true)
+ |-- Product_Name: string (nullable = true)
+ |-- Sales: double (nullable = true)
+ |-- Quantity: double (nullable = true)
+ |-- Discount: double (nullable = true)
+ |-- Profit: double (nullable = true)
+ |-- Shipping_Cost: double (nullable = true)
+ |-- Order_Priority: string (nullable = true)
+ |-- Person: string (nullable = true)
+ |-- People_Region: string (nullable = true)
+ |-- Order_ID: string (nullable = true)
+ |-- Market: string (nullable = true)
 
  */
 ===========================================================================================================================================================================
@@ -114,7 +115,7 @@ COMMAND:
 
  RESULT:
 
- //df: org.apache.spark.sql.DataFrame = [_c0: string, _c1: string ... 20 more fields]
+ //df: org.apache.spark.sql.DataFrame = [Order_Date: timestamp, Ship_Mode: string ... 20 more fields]
 
 
 COMMAND: 
@@ -125,40 +126,39 @@ COMMAND:
 
  /*
  root
- |-- _c0: string (nullable = true)
- |-- _c1: string (nullable = true)
- |-- _c2: string (nullable = true)
- |-- _c3: string (nullable = true)
- |-- _c4: string (nullable = true)
- |-- _c5: string (nullable = true)
- |-- _c6: string (nullable = true)
- |-- _c7: string (nullable = true)
- |-- _c8: string (nullable = true)
- |-- _c9: string (nullable = true)
- |-- _c10: string (nullable = true)
- |-- _c11: string (nullable = true)
- |-- _c12: string (nullable = true)
- |-- _c13: double (nullable = true)
- |-- _c14: string (nullable = true)
- |-- _c15: string (nullable = true)
- |-- _c16: string (nullable = true)
- |-- _c17: string (nullable = true)
- |-- _c18: string (nullable = true)
- |-- _c19: string (nullable = true)
- |-- _c20: string (nullable = true)
+ |-- Order_Date: timestamp (nullable = true)
+ |-- Ship_Mode: string (nullable = true)
+ |-- Segment: string (nullable = true)
+ |-- City: string (nullable = true)
+ |-- State: string (nullable = true)
+ |-- Country: string (nullable = true)
+ |-- Orders_Market: string (nullable = true)
+ |-- Orders_Region: string (nullable = true)
+ |-- Category: string (nullable = true)
+ |-- Sub_Category: string (nullable = true)
+ |-- Product_Name: string (nullable = true)
+ |-- Sales: double (nullable = true)
+ |-- Quantity: double (nullable = true)
+ |-- Discount: double (nullable = true)
+ |-- Profit: double (nullable = true)
+ |-- Shipping_Cost: double (nullable = true)
+ |-- Order_Priority: string (nullable = true)
+ |-- Person: string (nullable = true)
+ |-- People_Region: string (nullable = true)
+ |-- Order_ID: string (nullable = true)
+ |-- Market: string (nullable = true)
  |-- sum: double (nullable = true)
-
  */
 ===========================================================================================================================================================================
 5. delete any one of column
 
  COMMAND: 
 
- df = df.drop("_c18")
+ df = df.drop("People_Region")
 
  RESULT:
 
- //df: org.apache.spark.sql.DataFrame = [_c0: string, _c1: string ... 19 more fields]
+ //df: org.apache.spark.sql.DataFrame = [Order_Date: timestamp, Ship_Mode: string ... 19 more fields]
 
  COMMAND: 
 
@@ -167,28 +167,29 @@ COMMAND:
  RESULT:
 
  /*
- root
- |-- _c0: string (nullable = true)
- |-- _c1: string (nullable = true)
- |-- _c2: string (nullable = true)
- |-- _c3: string (nullable = true)
- |-- _c4: string (nullable = true)
- |-- _c5: string (nullable = true)
- |-- _c6: string (nullable = true)
- |-- _c7: string (nullable = true)
- |-- _c8: string (nullable = true)
- |-- _c9: string (nullable = true)
- |-- _c10: string (nullable = true)
- |-- _c11: string (nullable = true)
- |-- _c12: string (nullable = true)
- |-- _c13: double (nullable = true)
- |-- _c14: string (nullable = true)
- |-- _c15: string (nullable = true)
- |-- _c16: string (nullable = true)
- |-- _c17: string (nullable = true)
- |-- _c19: string (nullable = true)
- |-- _c20: string (nullable = true)
+root
+ |-- Order_Date: timestamp (nullable = true)
+ |-- Ship_Mode: string (nullable = true)
+ |-- Segment: string (nullable = true)
+ |-- City: string (nullable = true)
+ |-- State: string (nullable = true)
+ |-- Country: string (nullable = true)
+ |-- Orders_Market: string (nullable = true)
+ |-- Orders_Region: string (nullable = true)
+ |-- Category: string (nullable = true)
+ |-- Sub_Category: string (nullable = true)
+ |-- Product_Name: string (nullable = true)
+ |-- Sales: double (nullable = true)
+ |-- Quantity: double (nullable = true)
+ |-- Discount: double (nullable = true)
+ |-- Profit: double (nullable = true)
+ |-- Shipping_Cost: double (nullable = true)
+ |-- Order_Priority: string (nullable = true)
+ |-- Person: string (nullable = true)
+ |-- Order_ID: string (nullable = true)
+ |-- Market: string (nullable = true)
  |-- sum: double (nullable = true)
+
 
  */
 ===========================================================================================================================================================================
@@ -203,42 +204,40 @@ COMMAND:
  /*
 
  == Parsed Logical Plan ==
-Project [_c0#17, _c1#18, _c2#19, _c3#20, _c4#21, _c5#22, _c6#23, _c7#24, _c8#25, _c9#26, _c10#27, _c11#28, _c12#29, _c13#59, _c14#31, _c15#32, _c16#33, _c17#34, _c19#36, _c20#37, sum#82]
-+- Project [_c0#17, _c1#18, _c2#19, _c3#20, _c4#21, _c5#22, _c6#23, _c7#24, _c8#25, _c9#26, _c10#27, _c11#28, _c12#29, _c13#59, _c14#31, _c15#32, _c16#33, _c17#34, _c18#35, _c19#36, _c20#37, ((cast(_c11#28 as double) + cast(_c12#29 as double)) + _c13#59) AS sum#82]
-   +- Project [_c0#17, _c1#18, _c2#19, _c3#20, _c4#21, _c5#22, _c6#23, _c7#24, _c8#25, _c9#26, _c10#27, _c11#28, _c12#29, cast(_c13#30 as double) AS _c13#59, _c14#31, _c15#32, _c16#33, _c17#34, _c18#35, _c19#36, _c20#37]
-      +- Relation [_c0#17,_c1#18,_c2#19,_c3#20,_c4#21,_c5#22,_c6#23,_c7#24,_c8#25,_c9#26,_c10#27,_c11#28,_c12#29,_c13#30,_c14#31,_c15#32,_c16#33,_c17#34,_c18#35,_c19#36,_c20#37] csv
+Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, Quantity#60, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, Order_ID#36, Market#37, sum#82]
++- Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, Quantity#60, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, People_Region#35, Order_ID#36, Market#37, ((Sales#28 + Quantity#60) + Discount#30) AS sum#82]
+   +- Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, cast(Quantity#29 as double) AS Quantity#60, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, People_Region#35, Order_ID#36, Market#37]
+      +- Relation [Order_Date#17,Ship_Mode#18,Segment#19,City#20,State#21,Country#22,Orders_Market#23,Orders_Region#24,Category#25,Sub_Category#26,Product_Name#27,Sales#28,Quantity#29,Discount#30,Profit#31,Shipping_Cost#32,Order_Priority#33,Person#34,People_Region#35,Order_ID#36,Market#37] csv
 
 == Analyzed Logical Plan ==
-_c0: string, _c1: string, _c2: string, _c3: string, _c4: string, _c5: string, _c6: string, _c7: string, _c8: string, _c9: string, _c10: string, _c11: string, _c12: string, _c13: double, _c14: string, _c15: string, _c16: string, _c17: string, _c19: string, _c20: string, sum: double
-Project [_c0#17, _c1#18, _c2#19, _c3#20, _c4#21, _c5#22, _c6#23, _c7#24, _c8#25, _c9#26, _c10#27, _c11#28, _c12#29, _c13#59, _c14#31, _c15#32, _c16#33, _c17#34, _c19#36, _c20#37, sum#82]
-+- Project [_c0#17, _c1#18, _c2#19, _c3#20, _c4#21, _c5#22, _c6#23, _c7#24, _c8#25, _c9#26, _c10#27, _c11#28, _c12#29, _c13#59, _c14#31, _c15#32, _c16#33, _c17#34, _c18#35, _c19#36, _c20#37, ((cast(_c11#28 as double) + cast(_c12#29 as double)) + _c13#59) AS sum#82]
-   +- Project [_c0#17, _c1#18, _c2#19, _c3#20, _c4#21, _c5#22, _c6#23, _c7#24, _c8#25, _c9#26, _c10#27, _c11#28, _c12#29, cast(_c13#30 as double) AS _c13#59, _c14#31, _c15#32, _c16#33, _c17#34, _c18#35, _c19#36, _c20#37]
-      +- Relation [_c0#17,_c1#18,_c2#19,_c3#20,_c4#21,_c5#22,_c6#23,_c7#24,_c8#25,_c9#26,_c10#27,_c11#28,_c12#29,_c13#30,_c14#31,_c15#32,_c16#33,_c17#34,_c18#35,_c19#36,_c20#37] csv
+Order_Date: timestamp, Ship_Mode: string, Segment: string, City: string, State: string, Country: string, Orders_Market: string, Orders_Region: string, Category: string, Sub_Category: string, Product_Name: string, Sales: double, Quantity: double, Discount: double, Profit: double, Shipping_Cost: double, Order_Priority: string, Person: string, Order_ID: string, Market: string, sum: double
+Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, Quantity#60, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, Order_ID#36, Market#37, sum#82]
++- Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, Quantity#60, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, People_Region#35, Order_ID#36, Market#37, ((Sales#28 + Quantity#60) + Discount#30) AS sum#82]
+   +- Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, cast(Quantity#29 as double) AS Quantity#60, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, People_Region#35, Order_ID#36, Market#37]
+      +- Relation [Order_Date#17,Ship_Mode#18,Segment#19,City#20,State#21,Country#22,Orders_Market#23,Orders_Region#24,Category#25,Sub_Category#26,Product_Name#27,Sales#28,Quantity#29,Discount#30,Profit#31,Shipping_Cost#32,Order_Priority#33,Person#34,People_Region#35,Order_ID#36,Market#37] csv
 
 == Optimized Logical Plan ==
-Project [_c0#17, _c1#18, _c2#19, _c3#20, _c4#21, _c5#22, _c6#23, _c7#24, _c8#25, _c9#26, _c10#27, _c11#28, _c12#29, _c13#59, _c14#31, _c15#32, _c16#33, _c17#34, _c19#36, _c20#37, ((cast(_c11#28 as double) + cast(_c12#29 as double)) + _c13#59) AS sum#82]
-+- Project [_c0#17, _c1#18, _c2#19, _c3#20, _c4#21, _c5#22, _c6#23, _c7#24, _c8#25, _c9#26, _c10#27, _c11#28, _c12#29, cast(_c13#30 as double) AS _c13#59, _c14#31, _c15#32, _c16#33, _c17#34, _c19#36, _c20#37]
-   +- Relation [_c0#17,_c1#18,_c2#19,_c3#20,_c4#21,_c5#22,_c6#23,_c7#24,_c8#25,_c9#26,_c10#27,_c11#28,_c12#29,_c13#30,_c14#31,_c15#32,_c16#33,_c17#34,_c18#35,_c19#36,_c20#37] csv
+Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, Quantity#60, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, Order_ID#36, Market#37, ((Sales#28 + Quantity#60) + Discount#30) AS sum#82]
++- Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, cast(Quantity#29 as double) AS Quantity#60, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, Order_ID#36, Market#37]
+   +- Relation [Order_Date#17,Ship_Mode#18,Segment#19,City#20,State#21,Country#22,Orders_Market#23,Orders_Region#24,Category#25,Sub_Category#26,Product_Name#27,Sales#28,Quantity#29,Discount#30,Profit#31,Shipping_Cost#32,Order_Priority#33,Person#34,People_Region#35,Order_ID#36,Market#37] csv
 
 == Physical Plan ==
-*(1) Project [_c0#17, _c1#18, _c2#19, _c3#20, _c4#21, _c5#22, _c6#23, _c7#24, _c8#25, _c9#26, _c10#27, _c11#28, _c12#29, _c13#59, _c14#31, _c15#32, _c16#33, _c17#34, _c19#36, _c20#37, ((cast(_c11#28 as double) + cast(_c12#29 as double)) + _c13#59) AS sum#82]
-+- *(1) Project [_c0#17, _c1#18, _c2#19, _c3#20, _c4#21, _c5#22, _c6#23, _c7#24, _c8#25, _c9#26, _c10#27, _c11#28, _c12#29, cast(_c13#30 as double) AS _c13#59, _c14#31, _c15#32, _c16#33, _c17#34, _c19#36, _c20#37]
-   +- FileScan csv [_c0#17,_c1#18,_c2#19,_c3#20,_c4#21,_c5#22,_c6#23,_c7#24,_c8#25,_c9#26,_c10#27,_c11#28,_c12#29,_c13#30,_c14#31,_c15#32,_c16#33,_c17#34,_c19#36,_c20#37] Batched: false, DataFilters: [], Format: CSV, Location: InMemoryFileIndex(1 paths)[file:/Users/maithriudupa/Documents/RetailAnalytics_cpy_nulls.csv], PartitionFilters: [], PushedFilters: [], ReadSchema: struct<_c0:string,_c1:string,_c2:string,_c3:string,_c4:string,_c5:string,_c6:string,_c7:string,_c...
- */
-
+*(1) Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, Quantity#60, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, Order_ID#36, Market#37, ((Sales#28 + Quantity#60) + Discount#30) AS sum#82]
++- *(1) Project [Order_Date#17, Ship_Mode#18, Segment#19, City#20, State#21, Country#22, Orders_Market#23, Orders_Region#24, Category#25, Sub_Category#26, Product_Name#27, Sales#28, cast(Quantity#29 as double) AS Quantity#60, Discount#30, Profit#31, Shipping_Cost#32, Order_Priority#33, Person#34, Order_ID#36, Market#37]
+   +- FileScan csv [Order_Date#17,Ship_Mode#18,Segment#19,City#20,State#21,Country#22,Orders_Market#23,Orders_Region#24,Category#25,Sub_Category#26,Product_Name#27,Sales#28,Quantity#29,Discount#30,Profit#31,Shipping_Cost#32,Order_Priority#33,Person#34,Order_ID#36,Market#37] Batched: false, DataFilters: [], Format: CSV, Location: InMemoryFileIndex(1 paths)[file:/Users/maithriudupa/Documents/RetailAnalytics_cpy_nulls.csv], PartitionFilters: [], PushedFilters: [], ReadSchema: struct<Order_Date:timestamp,Ship_Mode:string,Segment:string,City:string,State:string,Country:stri...
 ===========================================================================================================================================================================
 7. print some sample rows 
 
 COMMAND: 
 
-df.select(df("_c1"), df("_c2"), df("_c3")).filter("_c2 like 'H%' " ).show(5)
+df.select(df("Ship_Mode"), df("Segment"), df("City")).filter("Segment like 'H%' " ).show(5)
 
 RESULT:
 
 /*
 
 +--------------+-----------+---------+
-|           _c1|        _c2|      _c3|
+|     Ship_Mode|    Segment|     City|
 +--------------+-----------+---------+
 |      Same Day|Home Office| SHENZHEN|
 |      Same Day|Home Office| SHENZHEN|
@@ -248,6 +247,7 @@ RESULT:
 +--------------+-----------+---------+
 only showing top 5 rows
 
+
 */
 
 ===========================================================================================================================================================================
@@ -255,7 +255,7 @@ only showing top 5 rows
 
 COMMAND: 
 
-df.select(df("_c1"), df("_c2"), df("_c3")).filter("_c2 like 'H%' " ).show(5)
+df.select(df("Ship_Mode"), df("Segment"), df("City")).filter("Segment like 'H%' " ).show(5)
 
 RESULT:
 
@@ -282,12 +282,12 @@ df.cache
 
 COMMAND: 
 
-df.select(df("_c1"), df("_c2"), df("_c3")).filter("_c2 like 'H%' " ).show(5)
+df.select(df("Ship_Mode"), df("Segment"), df("City")).filter("Segment like 'H%' " ).show(5)
 
 RESULT:
 
 +--------------+-----------+---------+
-|           _c1|        _c2|      _c3|
+|     Ship_Mode|    Segment|     City|
 +--------------+-----------+---------+
 |      Same Day|Home Office| SHENZHEN|
 |      Same Day|Home Office| SHENZHEN|
@@ -302,47 +302,48 @@ only showing top 5 rows
 
 COMMAND: 
 
-df.filter("_c2 like 'H%' " ).count()
+df.filter("Segment like 'H%' " ).count()
 
 RESULT:
 
-//res29: Long = 336
+//res7: Long = 336
 
 ===========================================================================================================================================================================
 12. filter above rows for only 2013.
 
 COMMAND: 
 
-df.select(df("_c0")).filter("_c0 like '2013%' " ).show()
+df.select(df("Order_Date")).filter("Order_Date like '2013%' " ).show()
 
 RESULT:
 
 /*
-+--------------------+
-|                 _c0|
-+--------------------+
-|2013-02-05T00:00:...|
-|2013-10-02T00:00:...|
-|2013-06-10T00:00:...|
-|2013-06-10T00:00:...|
-|2013-11-15T00:00:...|
-|2013-11-04T00:00:...|
-|2013-08-01T00:00:...|
-|2013-04-05T00:00:...|
-|2013-06-01T00:00:...|
-|2013-12-19T00:00:...|
-|2013-06-27T00:00:...|
-|2013-10-16T00:00:...|
-|2013-12-12T00:00:...|
-|2013-10-07T00:00:...|
-|2013-06-04T00:00:...|
-|2013-08-16T00:00:...|
-|2013-06-13T00:00:...|
-|2013-07-03T00:00:...|
-|2013-05-17T00:00:...|
-|2013-11-28T00:00:...|
-+--------------------+
++-------------------+
+|         Order_Date|
++-------------------+
+|2013-02-05 05:30:00|
+|2013-10-02 05:30:00|
+|2013-06-10 05:30:00|
+|2013-06-10 05:30:00|
+|2013-11-15 05:30:00|
+|2013-11-04 05:30:00|
+|2013-08-01 05:30:00|
+|2013-04-05 05:30:00|
+|2013-06-01 05:30:00|
+|2013-12-19 05:30:00|
+|2013-06-27 05:30:00|
+|2013-10-16 05:30:00|
+|2013-12-12 05:30:00|
+|2013-10-07 05:30:00|
+|2013-06-04 05:30:00|
+|2013-08-16 05:30:00|
+|2013-06-13 05:30:00|
+|2013-07-03 05:30:00|
+|2013-05-17 05:30:00|
+|2013-11-28 05:30:00|
++-------------------+
 only showing top 20 rows
+
 */
 
 
@@ -351,20 +352,19 @@ print sum of sales for each ship mode
 
 COMMAND: 
 
-df = df.withColumn("_c11",df("_c11").cast("double"))
-df.groupBy("_c1").sum("_c11").show(false)
+df.groupBy("Ship_Mode").sum("Sales").show(false)
 
 RESULT:
 
 +--------------+------------------+
-|_c1           |sum(_c11)         |
+|Ship_Mode     |sum(Sales)        |
 +--------------+------------------+
 |First Class   |88085.52150000003 |
 |Same Day      |26118.863759999982|
 |Second Class  |88966.61812000003 |
 |Standard Class|283435.16618000035|
-|Ship_Mode     |null              |
 +--------------+------------------+
+
 
 ===========================================================================================================================================================================
 
@@ -372,20 +372,17 @@ print sum of sales and discount for each ship mode and category (aggregations =>
 
 COMMAND: 
 
-df = df.withColumn("_c13", df("_c13").cast("double"))
-
-df.groupBy("_c1","_c8").sum("_c11","_c13").show(false)
+> df.groupBy("Ship_Mode","Category").sum("Sales","Discount").show(false)
 
 RESULT:
 
 +--------------+---------------+------------------+------------------+
-|_c1           |_c8            |sum(_c11)         |sum(_c13)         |
+|Ship_Mode     |Category       |sum(Sales)        |sum(Discount)     |
 +--------------+---------------+------------------+------------------+
 |Second Class  |Office Supplies|27829.79739999998 |319.3759999999999 |
 |Second Class  |Technology     |29806.762619999998|9.274000000000001 |
 |Standard Class|Furniture      |88468.94309999996 |34.449999999999974|
 |Standard Class|Technology     |105047.14458      |24.517999999999994|
-|Ship_Mode     |Category       |null              |null              |
 |Standard Class|Office Supplies|89919.0784999999  |99.96000000000016 |
 |First Class   |Office Supplies|29211.73399999999 |29.009999999999994|
 |Second Class  |Furniture      |31330.058099999995|11.76             |
@@ -400,5 +397,7 @@ write above dataframes to a csv file.
 
 COMMAND: 
 
-df.write.csv("/Users/maithriudupa/Documents/datacsv")
+df.write.option("inferSchema", "true").option("header", "true").csv("/Users/maithriudupa/Documents/datacsv")
+
+
 
