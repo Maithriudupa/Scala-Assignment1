@@ -1,0 +1,108 @@
+Next i want you to have two variables:-
+val listOfMeasures = List of numeric columns
+val listOfDimensions = List of string coumns
+val listOfDates = list of date columns
+
+once you have above lists then do following:-
+
+1.create a dataframe with aggregation where even index columns will have sum as aggregation and odd index cols will have avg, group by will be even indicies of groupby list.
+
+
+2. create a dataframe with addition 3 columns for each date column from above list => day_${dateCol}, month_${dateCol}, year_${dateCol}
+
+========================================================================================================================================================================================
+val df = spark.read.option("inferSchema", "true").option("header", "true").csv("/Users/maithriudupa/Documents/zak_processed_with_zeros.csv")
+
+
+
+
+1.create a dataframe with aggregation where even index columns will have sum as aggregation and odd index cols will have avg, group by will be even indicies of groupby list.
+
+
+val listOfMeasures = df.dtypes.filter(y => y._2 == "IntegerType" || y._2 == "DoubleType" ).map(f=> f._1)
+
+val listOfDimensions = df.dtypes.filter(y => y._2 == "StringType").map(f=> f._1)
+
+val listOfMeasuresEvenIndex = listOfMeasures.zipWithIndex.filter(_._2 % 2 == 0).map( _._1)
+
+val listOfMeasuresOddIndex = listOfMeasures.zipWithIndex.filter(_._2 % 2 != 0).map( _._1)
+
+val listOfMeasuresEvenIndexAgg = listOfMeasuresEvenIndex.map(measure => sum(col(measure)).as(s"sum_${measure}"))
+
+val listOfMeasuresOddIndexAgg = listOfMeasuresOddIndex.map(measure => avg(col(measure)).as(s"avg_${measure}"))
+
+val listOfAgg = (listOfMeasuresEvenIndexAgg  ++ listOfMeasuresOddIndexAgg)
+
+
+val listOfGroupBys = listOfDimensions.zipWithIndex.filter(_._2 % 2 == 0).map( _._1)
+
+val df1 = df.groupBy(listOfGroupBys.map(m=>col(m)):_*).agg(listOfAgg.head, listOfAgg.tail: _*)
+
+df1.show()
+
++-------------+--------------+-----------------+--------------------+-----------------+------------+--------------------------+-----------+------------------+--------------------+
+|Customer Code|FinancialGroup|          License|         Item Detail|license_comicbook|sum_Qty Sold|sum_SumOfPOS Sales Dollars|sum_Instock|avg_SumOfQty Avail|avg_# of Stores Sold|
++-------------+--------------+-----------------+--------------------+-----------------+------------+--------------------------+-----------+------------------+--------------------+
+|      DOL0000|          VALU|Avengers Assemble|            PP Plate|              yes|       254.0|                     227.0|       null|              null|                null|
+|      AAF0000|         TTOTG|           Minnie| Embossed DW Tumbler|               no|        16.0|                     112.0|       null|              null|                3.75|
+|      AAF0000|         TTOTG|   Star Wars Ep 7|             3pc Set|               no|       179.0|                    1780.0|       null|              null|  6.6521739130434785|
+|      DOL0000|          VALU|            Sofia|PP Twist N Twirl ...|               no|         8.0|                       0.0|       null|              null|                null|
+|      TAR0000|         TTOTG|          Minions|            Flatware|               no|     14998.0|                   88842.0|     2282.0|28187.478260869564|  1778.5652173913043|
+|      TAR0000|         TTOTG|         Princess|DW Tumbler W Stra...|               no|     20202.0|                   79285.0|      830.0| 7093.461538461538|  1077.1666666666667|
+|      TAR0000|         TTOTG|Star Wars Classic|     Individual Bowl|               no|         4.0|                       3.0|        0.0|              40.0|                 0.0|
+|      AAF0000|         TTOTG|            Mario|       FlatwareGoPak|               no|         4.0|                      15.0|       null|              null|                 1.0|
+|      DOL0000|          VALU|   Paw Patrol Boy|          PP Set 3pc|               no|     18815.0|                   47274.0|       null|              null|                null|
+|      MEI0000|         TTOTG|Shimmer and Shine|  Tritan Bottle 14oz|               no|        72.0|                     433.0|       null|             447.0|                null|
+|      AAF0000|         TTOTG|        Spiderman|DW Tumbler W Stra...|              yes|       190.0|                    1397.0|       null|              null|   7.130434782608695|
+|      DOL0000|          VALU|   Star Wars Ep 7|  DW PS Tumbler 18oz|               no|       687.0|                    1597.0|       null|              null|                null|
+|      AAF0000|         TTOTG|      Hello Kitty|Tritan Bottle W S...|               no|         1.0|                       3.0|       null|              null|                 1.0|
+|      AAF0000|         TTOTG|           Batman|  Tritan Bottle 25oz|              yes|       783.0|                    6949.0|       null|              null|   24.91304347826087|
+|      AAF0000|         TTOTG|             Cars|  Tritan Bottle 14oz|               no|       484.0|                    2829.0|       null|              null|  16.304347826086957|
+|      MEI0000|         TTOTG|   My Little Pony|        Spin Tumbler|               no|        33.0|                      48.0|       null| 2.272727272727273|                null|
+|      AAF0000|         TTOTG|       Frozen Boy|  Tritan Bottle 14oz|               no|        22.0|                      46.0|       null|              null|               1.625|
+|      AAF0000|         TTOTG|           Minnie|       FlatwareGoPak|               no|         1.0|                       2.0|       null|              null|                 1.0|
+|      DOL0000|          VALU|   Paw Patrol Boy|      PP Milk Bottle|               no|     47487.0|                   58660.0|       null|              null|                null|
+|      TAR0000|         TTOTG|             Cars|  Tritan Bottle 14oz|               no|     15372.0|                   90801.0|     1830.0| 6399.130434782609|  1690.7826086956522|
++-------------+--------------+-----------------+--------------------+-----------------+------------+--------------------------+-----------+------------------+--------------------+
+only showing top 20 rows
+
+
+
+========================================================================================================================================================================================
+
+2.2. create a dataframe with addition 3 columns for each date column from above list => day_${dateCol}, month_${dateCol}, year_${dateCol}
+
+
+val listOfDates = df.dtypes.filter(y => y._2 == "TimestampType" ).map(f=> f._1)
+
+val df21= df.select(listOfDates.map(m=>col(m)):_*)
+
+val df22 = listOfDates.foldLeft(df21)((tempdf, colName)=> tempdf.withColumn(s"day_$colName", dayofmonth(col(colName))).withColumn(s"Month_$colName", month(col(colName))).withColumn(s"year_$colName", year(col(colName))))
+
+df22.show()
++-------------------+-------------------+------------------+--------------------+-------------------+---------------+-----------------+----------------+
+|     Zak Start Date|        Date Posted|day_Zak Start Date|Month_Zak Start Date|year_Zak Start Date|day_Date Posted|Month_Date Posted|year_Date Posted|
++-------------------+-------------------+------------------+--------------------+-------------------+---------------+-----------------+----------------+
+|2017-03-20 00:00:00|2017-03-27 00:00:00|                20|                   3|               2017|             27|                3|            2017|
+|2017-01-02 00:00:00|2017-01-10 00:00:00|                 2|                   1|               2017|             10|                1|            2017|
+|2017-01-02 00:00:00|2017-01-10 00:00:00|                 2|                   1|               2017|             10|                1|            2017|
+|2017-01-02 00:00:00|2017-01-10 00:00:00|                 2|                   1|               2017|             10|                1|            2017|
+|2017-01-09 00:00:00|2017-01-18 00:00:00|                 9|                   1|               2017|             18|                1|            2017|
+|2017-01-09 00:00:00|2017-01-18 00:00:00|                 9|                   1|               2017|             18|                1|            2017|
+|2017-01-16 00:00:00|2017-01-25 00:00:00|                16|                   1|               2017|             25|                1|            2017|
+|2017-01-16 00:00:00|2017-01-25 00:00:00|                16|                   1|               2017|             25|                1|            2017|
+|2017-01-16 00:00:00|2017-01-25 00:00:00|                16|                   1|               2017|             25|                1|            2017|
+|2017-01-23 00:00:00|2017-02-01 00:00:00|                23|                   1|               2017|              1|                2|            2017|
+|2017-01-23 00:00:00|2017-02-01 00:00:00|                23|                   1|               2017|              1|                2|            2017|
+|2017-01-30 00:00:00|2017-02-09 00:00:00|                30|                   1|               2017|              9|                2|            2017|
+|2017-02-06 00:00:00|2017-02-15 00:00:00|                 6|                   2|               2017|             15|                2|            2017|
+|2017-02-13 00:00:00|2017-02-21 00:00:00|                13|                   2|               2017|             21|                2|            2017|
+|2017-02-13 00:00:00|2017-02-21 00:00:00|                13|                   2|               2017|             21|                2|            2017|
+|2017-02-20 00:00:00|2017-02-28 00:00:00|                20|                   2|               2017|             28|                2|            2017|
+|2017-02-27 00:00:00|2017-03-07 00:00:00|                27|                   2|               2017|              7|                3|            2017|
+|2017-03-06 00:00:00|2017-03-15 00:00:00|                 6|                   3|               2017|             15|                3|            2017|
+|2017-03-06 00:00:00|2017-03-15 00:00:00|                 6|                   3|               2017|             15|                3|            2017|
+|2017-03-13 00:00:00|2017-03-21 00:00:00|                13|                   3|               2017|             21|                3|            2017|
++-------------------+-------------------+------------------+--------------------+-------------------+---------------+-----------------+----------------+
+only showing top 20 rows
+
